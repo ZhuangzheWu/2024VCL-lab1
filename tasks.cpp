@@ -379,37 +379,60 @@ namespace VCX::Labs::Drawing2D {
         ImageRGB const & input,
         int              rate) {
         // your code here:
+        // ImageRGB temp(input.GetSizeX() * rate, input.GetSizeY() * rate);
         int in_width   = input.GetSizeX();
         int in_height  = input.GetSizeY();
-        int out_width  = in_width / rate;
-        int out_height = in_height / rate;
-
-        for (size_t x = 0; x < out_width; x++) {
-            for (size_t y = 0; y < out_height; y++) {
-                glm::vec3 color = { 0.0, 0.0, 0.0 };
-                for (int i = 0; i < rate; i++) {
-                    for (int j = 0; j < rate; j++) {
-                        color += input.At(x * rate + i, y * rate + j);
-                    }
-                }
-                color = color / float(rate * rate);
-                // input.At(x * rate, y * rate) = color;
-            }
-        }
-        float dx = float(out_width) / float(320);
-        float dy = float(out_height) / float(320);
+        int temp_width = rate * 320;
+        int temp_height = rate * 320;
+        float dx = float(in_width) / float(temp_width);
+        float dy = float(in_height) / float(temp_height);
+        // for (float x = 0.0; x < temp_width; x++) {
+        //     for (float y = 0.0; y < temp_height; y++) {
+        //         temp.At(x, y) = input.At(int(x * dx), int(y * dy));             
+        //     }
+        // }
         for (float x = 0.0; x < 320; x++) {
             for (float y = 0.0; y < 320; y++) {
-                glm::vec3 color = { 0.0, 0.0, 0.0 };
+                glm::vec3 color = {0.0,0.0,0.0};
                 for (int i = 0; i < rate; i++) {
                     for (int j = 0; j < rate; j++) {
-                        color += input.At(int(x * dx) * rate+i, int(y * dy) * rate+j);
+                        color += input.At(int((x * rate + i) * dx), int((y * rate + i) * dy));
                     }
                 }
+                
                 color           = color / float(rate * rate);
                 output.At(x, y) = color;
             }
         }
+        // int out_width  = in_width / rate;
+        // int out_height = in_height / rate;
+
+        // for (size_t x = 0; x < out_width; x++) {
+        //     for (size_t y = 0; y < out_height; y++) {
+        //         glm::vec3 color = { 0.0, 0.0, 0.0 };
+        //         for (int i = 0; i < rate; i++) {
+        //             for (int j = 0; j < rate; j++) {
+        //                 color += input.At(x * rate + i, y * rate + j);
+        //             }
+        //         }
+        //         color = color / float(rate * rate);
+        //         // input.At(x * rate, y * rate) = color;
+        //     }
+        // }
+        // float dx = float(out_width) / float(320);
+        // float dy = float(out_height) / float(320);
+        // for (float x = 0.0; x < 320; x++) {
+        //     for (float y = 0.0; y < 320; y++) {
+        //         glm::vec3 color = { 0.0, 0.0, 0.0 };
+        //         for (int i = 0; i < rate; i++) {
+        //             for (int j = 0; j < rate; j++) {
+        //                 color += input.At(int(x * dx) * rate+i, int(y * dy) * rate+j);
+        //             }
+        //         }
+        //         color           = color / float(rate * rate);
+        //         output.At(x, y) = color;
+        //     }
+        // }
     }
 
     /******************* 7. Bezier Curve *****************/
